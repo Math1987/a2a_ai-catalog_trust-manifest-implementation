@@ -20,6 +20,8 @@ The example keys and claims are local fixtures under `.example` domains.
 Requires Rust 1.95.0; the toolchain and dependency lockfile are included.
 
 ```sh
+git clone https://github.com/Math1987/a2a_ai-catalog_trust-manifest-implementation.git aithos-catalog-signatures
+cd aithos-catalog-signatures
 cargo test --locked --all-features
 cargo run --locked --features cli -- demo --out .local/my-demo
 ```
