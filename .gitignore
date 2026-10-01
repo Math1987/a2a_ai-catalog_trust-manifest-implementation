@@ -1,0 +1,6 @@
+/target/
+/.local/
+/.venv/
+*.pem
+__pycache__/
+.DS_Store

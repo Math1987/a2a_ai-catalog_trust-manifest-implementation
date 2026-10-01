@@ -1,0 +1,76 @@
+{
+  "digest": "sha256:46a373f31d8f823313893c522f8f63dbd0553311e0f45d53708835eeef9d45c5",
+  "identifier": "urn:air:publisher.example:agent:meeting",
+  "signatures": [
+    {
+      "expiresAt": "2026-10-01T06:59:48.977768Z",
+      "issuedAt": "2026-10-01T05:59:48.977768Z",
+      "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRpZDp3ZWI6cHVibGlzaGVyLmV4YW1wbGUjbG9jYWwifQ..J6rL0kJ9JQaukKDnOysGJ2AgrQkebCz7_3cLz08VX63QG_n_zXGcxL8A_ZkUDfhyuEwwv_0zt9g8XyFWnHz_1g",
+      "paths": [
+        [
+          "identifier"
+        ],
+        [
+          "type"
+        ],
+        [
+          "digest"
+        ],
+        [
+          "version"
+        ],
+        [
+          "url"
+        ]
+      ],
+      "profile": "did-web-v1",
+      "signer": "did:web:publisher.example"
+    },
+    {
+      "expiresAt": "2026-10-01T06:59:48.977768Z",
+      "issuedAt": "2026-10-01T06:00:48.977768Z",
+      "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImRpZDp3ZWI6cmVnaXN0cnkuZXhhbXBsZSNsb2NhbCJ9..wFvIUVGYkkaBnLAlmc58ivA5v7LkAk3M78ydnMm9KW1vJInseb1KFzIO19EnO6QfbrJ-qTRxQmg8lkYAzxzHig",
+      "paths": [
+        [
+          "identifier"
+        ],
+        [
+          "type"
+        ],
+        [
+          "digest"
+        ],
+        [
+          "version"
+        ],
+        [
+          "url"
+        ],
+        [
+          "trustManifests",
+          "did:web:registry.example"
+        ]
+      ],
+      "profile": "did-web-v1",
+      "signer": "did:web:registry.example"
+    }
+  ],
+  "trustManifests": {
+    "did:web:registry.example": {
+      "extensions": {
+        "https://registry.example/schemas/local-fixture": {
+          "fixtureOnly": true,
+          "observation": "not-performed",
+          "revision": 2
+        }
+      },
+      "trustSchema": {
+        "identifier": "https://registry.example/profiles/local-fixture",
+        "version": "1.0"
+      }
+    }
+  },
+  "type": "application/a2a-agent-card+json",
+  "url": "https://cards.example/meeting.json",
+  "version": "1.0.0"
+}

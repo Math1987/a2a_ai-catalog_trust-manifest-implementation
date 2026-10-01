@@ -1,0 +1,46 @@
+{
+  "baseline": {
+    "accepted": true,
+    "artifactIntegrity": true,
+    "claimCoverage": true,
+    "contributorAttributed": null,
+    "fresh": true,
+    "limitations": [
+      "Baseline signature does not bind entry identifier/version or catalog membership.",
+      "Claim truth, DNS/consent, current registry status and transparency are not checked."
+    ],
+    "publisherAuthorized": true,
+    "releaseCoverage": null,
+    "signatureValid": true,
+    "signer": "did:web:registry.example",
+    "signerAuthenticated": true,
+    "subjectBinding": true,
+    "trustedSigner": true
+  },
+  "baselineRevision": "04a99cd1ac9a20dd6586c6196e87f5e4570303b1",
+  "fixtureOnly": true,
+  "oldCatalogSnapshotRejected": true,
+  "pr117": {
+    "accepted": true,
+    "artifactIntegrity": true,
+    "claimCoverage": true,
+    "contributorAttributed": null,
+    "fresh": true,
+    "limitations": [
+      "Only selected fields are endorsed; catalog membership is not verified.",
+      "Claim truth, DNS/consent, current registry status and transparency are not checked."
+    ],
+    "publisherAuthorized": true,
+    "releaseCoverage": true,
+    "signatureValid": true,
+    "signer": "did:web:registry.example",
+    "signerAuthenticated": true,
+    "subjectBinding": null,
+    "trustedSigner": true
+  },
+  "pr117Revision": "51df07b58e831f71ab6047672d6482ef93f5015f",
+  "privateKeys": "ephemeral; not saved",
+  "publisherSurvivesContributorRenewal": true,
+  "refreshedCatalogSnapshotAccepted": true,
+  "verifyAt": "2026-10-01T06:00:48.977768Z"
+}

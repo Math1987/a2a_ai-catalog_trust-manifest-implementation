@@ -1,0 +1,28 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "assertionMethod": [
+    "did:web:publisher.example#local"
+  ],
+  "id": "did:web:publisher.example",
+  "verificationMethod": [
+    {
+      "controller": "did:web:publisher.example",
+      "id": "did:web:publisher.example#local",
+      "publicKeyJwk": {
+        "alg": "ES256",
+        "crv": "P-256",
+        "key_ops": [
+          "verify"
+        ],
+        "kty": "EC",
+        "use": "sig",
+        "x": "hNMAswGu-PszLVjwpIiaVbGWjA03TshB1MmaqNhJsW8",
+        "y": "yTnFYVdTHuNrWl3zyRcC_IRv228Jf9mqmg9Ep-cZdzw"
+      },
+      "type": "JsonWebKey2020"
+    }
+  ]
+}
