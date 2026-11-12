@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:publisher.example:a2a:discovery",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://publisher.example/card.json"
+    }
+  ],
+  "host": {
+    "displayName": "Public test operator",
+    "identifier": "did:web:catalog-test.example"
+  },
+  "signature": {
+    "expiresAt": "2026-11-12T13:00:00Z",
+    "issuedAt": "2026-11-12T12:00:00Z",
+    "jws": "eyJhbGciOiJFUzI1NiIsImp3ayI6eyJhbGciOiJFUzI1NiIsImNydiI6IlAtMjU2Iiwia2V5X29wcyI6WyJ2ZXJpZnkiXSwia3R5IjoiRUMiLCJ1c2UiOiJzaWciLCJ4IjoiVl9sYzFfMDRjUDdkYnJqVzAwdTF2emwtblkweEJLTDl4QkJGUXpQY2cwbyIsInkiOiJRLXE3eWctbGtsLXptQkdNVHpkbHkxUlVyNlFNV2twamwwN1VzUUpyd2Z3In0sImtpZCI6ImRpZDp3ZWI6Y2F0YWxvZy10ZXN0LmV4YW1wbGUjYXNzZXJ0aW9uLWtleSIsInR5cCI6ImFpLWNhdGFsb2crandzIn0..JI6MlQRKKXj1brHfNMZX0EpKXaPLBS9Pu8DJ0HghtS3hzzqR9W3fDBoAUPT-8OceQgwWYxs0vS-tQgjqtUj5gQ",
+    "profile": "did-web-v1",
+    "signer": "did:web:catalog-test.example"
+  },
+  "specVersion": "1.0"
+}

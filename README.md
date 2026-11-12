@@ -1,13 +1,15 @@
 # Aithos Catalog Signatures
 
-A Rust library and local CLI for signing and verifying AI Catalog entries in
-two **explicitly pinned, separate formats**. The pure library is suitable for
-import into the Rust registry. HTTP fetching and the CLI are optional features.
+A Rust library and local CLI for signing and verifying AI Catalog documents.
+It preserves two explicitly pinned historical entry formats and implements the
+current did:web Catalog Profile from PR #123. HTTP fetching and the CLI are
+optional features.
 
 | Dialect | Pinned source | Construction |
 | --- | --- | --- |
 | `baseline` | [main 04a99cd](https://github.com/Agent-Card/ai-catalog/blob/04a99cd1ac9a20dd6586c6196e87f5e4570303b1/specification/ai-catalog.md) | Singular `trustManifest`; JCS of manifest excluding only its top-level `signature` |
 | `pr117` | [draft head 51df07b](https://github.com/jonathanhefner/ai-catalog/blob/51df07b58e831f71ab6047672d6482ef93f5015f/specification/ai-catalog.md) | Contributor map, entry digest, selected-field signatures with explicit `did-web-v1` |
+| `catalog_profile` | [PR #123 head 2973e3a](https://github.com/Agent-Card/ai-catalog/blob/2973e3ae00e43d27d24fa7c9a3b1d1ed5d811aad/specification/ai-catalog.md#the-did-web-catalog-profile) | Whole-catalog detached JWS, current `did-web-v1` authentication and exact `host.identifier` attribution |
 
 This package implements signature mechanics, artifact binding and configured
 acceptance checks. **It does not perform domain certification or establish
@@ -233,3 +235,66 @@ and version changes, split signatures, publisher/contributor separation, DID
 authorization/removal, timestamps, Unicode path ordering, strict JSON, KMS DER
 conversion, root snapshots and fetch boundaries. No live credentials or network
 access are required by the Rust test suite.
+
+
+## Current did:web Catalog Profile (PR #123)
+
+The `catalog_profile` module signs and verifies the complete catalogue snapshot,
+excluding only its immediate `signature.jws` and root `additionalSignatures`.
+Nested Trust Manifests, their signatures, unknown members and array order remain
+covered. ES256/P-256, protected `typ=ai-catalog+jws`, DID key authorization and
+signature validity dates are checked before attribution to the exact
+`host.identifier`. Noncritical unknown JWS headers are accepted. Unsupported
+critical extensions, alternate key sources and `b64` are rejected.
+
+The root structural checks validate the fields this profile needs. Full catalog
+schema validation is a separate step (for example, `ai-catalog validate --json`).
+Entry publishers, nested endorsements, artifact bytes, legal identity and
+reputation are not authenticated by the root profile.
+
+```sh
+cargo build --locked --features cli
+./target/debug/catalog-signatures verify-catalog \
+  --url https://ai-catalog.a2a-market.com/.well-known/ai-catalog.json \
+  --allow-origin https://ai-catalog.a2a-market.com \
+  --expect-operator did:web:ai-catalog.a2a-market.com \
+  --require-expiry
+```
+
+The expected operator and allowed origin are independent caller configuration.
+Online verification uses bounded HTTPS, public-address validation and DNS-pinned
+connections. Redirects and ambient proxies are refused by local policy. An
+offline check instead uses `--catalog FILE --did-document FILE`; its report
+explicitly records that DID acquisition is caller-pinned, not online resolution.
+The profile does not require the catalogue retrieval hostname to equal the DID
+hostname: a mirror can be allowed independently.
+
+To sign, prepare an unsigned source with the correct `host.identifier`, then:
+
+```sh
+./target/debug/catalog-signatures sign-catalog \
+  --catalog catalog-source.json --key /private/path/operator.pem \
+  --signer did:web:operator.example --kid did:web:operator.example#key-1 \
+  --lifetime-seconds 2592000 --out signed-catalog.json
+```
+
+The private PKCS#8 key must be a regular Unix file inaccessible to group/other
+users; final symlinks are refused. No private material is printed. Signing does
+not claim that the DID has already been published. Production deployment can
+supply a private temporary file from an operating-system vault and remove it
+immediately after signing. The existing `Es256Signer` trait also allows future
+KMS/HSM integration; no AWS signing adapter is provided here.
+
+`expiresAt` is optional in the profile and in library verification. The signing
+CLI emits an explicit expiry (default one hour; maximum one year). Consumers can
+request `--require-expiry`; clock skew defaults to zero and is separately
+configurable. A removed DID assertion key fails current-state verification even
+if its signature was created earlier. Refresh the DID before signing with a new
+key and account for caches and signatures still expected to verify.
+
+Run the new suite with `cargo test --locked --all-features --test catalog_profile`.
+The public replay vectors are included under `vectors/pr123/`. The ignored
+`generate_public_proof_vectors` test can explicitly regenerate public cases with
+an ephemeral in-memory key; it never exports that private key. Regeneration
+changes the evidence hashes and requires rerunning the independent verifier.
+The legacy suites remain intact.

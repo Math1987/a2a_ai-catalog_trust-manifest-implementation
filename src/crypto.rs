@@ -80,6 +80,68 @@ pub fn sign(payload: &[u8], signer: &str, kid: &str, key: &dyn Es256Signer) -> R
     Ok(format!("{protected}..{}", encode(&raw)))
 }
 
+/// Current catalogue profiles authenticate the containing object kind in typ.
+/// The legacy sign/verify functions deliberately retain their pinned semantics.
+pub fn sign_typed(
+    payload: &[u8],
+    signer: &str,
+    kid: &str,
+    key: &dyn Es256Signer,
+    typ: &str,
+) -> Result<String> {
+    did::validate_kid(signer, kid)?;
+    ensure(!typ.is_empty(), "JWS typ must not be empty")?;
+    let protected = encode(&strict::canonical(
+        &json!({"alg":"ES256", "kid":kid, "typ":typ}),
+    )?);
+    let input = format!("{protected}.{}", encode(payload));
+    let raw = key.sign_es256(input.as_bytes())?;
+    Signature::from_slice(&raw).map_err(|_| Error("invalid ES256 signer output".into()))?;
+    Ok(format!("{protected}..{}", encode(&raw)))
+}
+
+/// Current profiles require an exact protected typ and ignore unknown,
+/// non-critical headers. Legacy verification retains its pinned allowlist.
+pub fn verify_typed(
+    payload: &[u8],
+    jws: &str,
+    signer: &str,
+    document: &Value,
+    expected_typ: &str,
+) -> Result<()> {
+    let parts: Vec<_> = jws.split('.').collect();
+    ensure(
+        parts.len() == 3 && parts[1].is_empty(),
+        "expected detached compact JWS",
+    )?;
+    let header = strict::parse(&decode(parts[0])?)?;
+    let obj = header
+        .as_object()
+        .ok_or_else(|| Error("JWS header is not an object".into()))?;
+    ensure(
+        !expected_typ.is_empty() && header.get("typ").and_then(Value::as_str) == Some(expected_typ),
+        "missing or mismatched protected JWS typ",
+    )?;
+    ensure(string(&header, "alg")? == "ES256", "did:web requires ES256")?;
+    ensure(
+        ["b64", "crit", "jku", "jwk", "x5u", "x5c"]
+            .iter()
+            .all(|name| !obj.contains_key(*name)),
+        "unsupported critical header, b64 or alternative key source",
+    )?;
+    if let Some(cty) = obj.get("cty") {
+        ensure(cty.is_string(), "JWS cty must be a string")?;
+    }
+    let public = did::assertion_key(document, signer, string(&header, "kid")?)?;
+    let signature = Signature::from_slice(&decode(parts[2])?)
+        .map_err(|_| Error("expected 64-byte JOSE ES256 signature".into()))?;
+    verify_raw(
+        &public,
+        &format!("{}.{}", parts[0], encode(payload)).into_bytes(),
+        &signature,
+    )
+}
+
 pub fn verify(payload: &[u8], jws: &str, signer: &str, document: &Value) -> Result<()> {
     let parts: Vec<_> = jws.split('.').collect();
     ensure(

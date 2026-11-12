@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:publisher.example:a2a:discovery",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://publisher.example/card.json"
+    }
+  ],
+  "host": {
+    "displayName": "Public test operator",
+    "identifier": "did:web:catalog-test.example"
+  },
+  "signature": {
+    "expiresAt": "2026-11-12T13:00:00Z",
+    "issuedAt": "2026-11-12T12:00:00Z",
+    "jws": "eyJhbGciOiJFUzI1NiIsImI2NCI6dHJ1ZSwia2lkIjoiZGlkOndlYjpjYXRhbG9nLXRlc3QuZXhhbXBsZSNhc3NlcnRpb24ta2V5IiwidHlwIjoiYWktY2F0YWxvZytqd3MifQ..njbDIwCmw-LhibwI6hsTl11qRWfu1sTxy2WnZMvxB7tFSpMtpBMQsC-6wE2D3kfFYIUbQd8UMnpz5w4vxhFKYA",
+    "profile": "did-web-v1",
+    "signer": "did:web:catalog-test.example"
+  },
+  "specVersion": "1.0"
+}

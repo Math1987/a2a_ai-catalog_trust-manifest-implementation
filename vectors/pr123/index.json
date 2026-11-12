@@ -1,0 +1,659 @@
+{
+  "cases": [
+    {
+      "catalog": "cases/valid/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/valid/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "valid",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/root-additional-signatures/catalog.json",
+      "catalogSha256": "sha256:43a5552ce9d9d4f9a59e8db553ba69822bb0cb68e2c74463297cb2d8e1cc16ab",
+      "didDocument": "cases/root-additional-signatures/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "root-additional-signatures",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/nested-opaque-evidence/catalog.json",
+      "catalogSha256": "sha256:4c620cd24423d40a280dc2b6ebc3e561ee9c6106dd2c0e5789521e913987c008",
+      "didDocument": "cases/nested-opaque-evidence/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "nested-opaque-evidence",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/tampered-url/catalog.json",
+      "catalogSha256": "sha256:52d7a9b883467f6f4e12558861b09d25fae4c99395145f9db6ae1dda3d97a496",
+      "didDocument": "cases/tampered-url/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "tampered-url",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "cryptographic signature invalid"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/tampered-nested-jws/catalog.json",
+      "catalogSha256": "sha256:d5b6184eab9a2c87f2ad2147cc3b008899003cf396d0bfa72efbf9c79fd656d6",
+      "didDocument": "cases/tampered-nested-jws/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "tampered-nested-jws",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "cryptographic signature invalid"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/tampered-nested-additional-signatures/catalog.json",
+      "catalogSha256": "sha256:0d25d04feaeeb3483b3422289c35b6c21a4eca9e49c36139cc8a7541ee61092a",
+      "didDocument": "cases/tampered-nested-additional-signatures/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "tampered-nested-additional-signatures",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "cryptographic signature invalid"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/tampered-unknown-field/catalog.json",
+      "catalogSha256": "sha256:4871f715f11e8e0858a3d7991ba693fb7e9101f031dc6f6836c95dd4dd70b429",
+      "didDocument": "cases/tampered-unknown-field/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "tampered-unknown-field",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "cryptographic signature invalid"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/resigned-host-mismatch/catalog.json",
+      "catalogSha256": "sha256:5137ff87a0601c7b71c8aa13cf20d3d4af54cd6e7e268c617cecb8ff5945fe3f",
+      "didDocument": "cases/resigned-host-mismatch/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "resigned-host-mismatch",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": false,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/resigned-host-case-mismatch/catalog.json",
+      "catalogSha256": "sha256:503095c07c8364db1c402d6a57d42fc88302e8a579eb0a7f68e13822b366997d",
+      "didDocument": "cases/resigned-host-case-mismatch/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "resigned-host-case-mismatch",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": false,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/resigned-host-uri-normalization/catalog.json",
+      "catalogSha256": "sha256:564facabd7d5e26062d6a2a6c7c572046ebd057f6ebf2c25a0f63d35257a7faa",
+      "didDocument": "cases/resigned-host-uri-normalization/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "resigned-host-uri-normalization",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": false,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/resigned-no-host/catalog.json",
+      "catalogSha256": "sha256:fedb407dea437535e71b7a988aa6f87e52b6be9c05d92c4f1f2a539117a35600",
+      "didDocument": "cases/resigned-no-host/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "resigned-no-host",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "catalog host must be an object"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/wrong-typ/catalog.json",
+      "catalogSha256": "sha256:689f116963a07bbeb10c4d774c016b73dffcb3c187545fddcf9e8438bba981a2",
+      "didDocument": "cases/wrong-typ/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "wrong-typ",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "missing or mismatched protected JWS typ"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/b64-false/catalog.json",
+      "catalogSha256": "sha256:32e4fdb22563091a42c6578db2f33cda6249416820a0adf83ab81c7409440df8",
+      "didDocument": "cases/b64-false/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "b64-false",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "unsupported critical header, b64 or alternative key source"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/b64-true/catalog.json",
+      "catalogSha256": "sha256:2f321c8b31a05d9bc83c42d02aab3edd0b1cd8a6cb7cd3f5ed5ea53577c1ce1b",
+      "didDocument": "cases/b64-true/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "b64-true",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "unsupported critical header, b64 or alternative key source"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/alg-none/catalog.json",
+      "catalogSha256": "sha256:804271cd18c6e61270d9e7c730cd6db4c13f76b8056eff59ec3886720dae635a",
+      "didDocument": "cases/alg-none/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "alg-none",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "did:web requires ES256"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/header-jwk-injection/catalog.json",
+      "catalogSha256": "sha256:001ef3d82a2ba6feb18697237dd59c770a7be8cd7069399c57e369b485dd1ed3",
+      "didDocument": "cases/header-jwk-injection/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "header-jwk-injection",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "unsupported critical header, b64 or alternative key source"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/unknown-critical/catalog.json",
+      "catalogSha256": "sha256:f75ac9acef40d5bb1de6972ff10df92eebcc71ac31e6193944ecf1a095a827a2",
+      "didDocument": "cases/unknown-critical/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "unknown-critical",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "unsupported critical header, b64 or alternative key source"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/optional-cty/catalog.json",
+      "catalogSha256": "sha256:a71201c759f80c7bacb7545176854b3898aa7b08b025b7fd84ca9a44233199ce",
+      "didDocument": "cases/optional-cty/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "optional-cty",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/unknown-noncritical-header/catalog.json",
+      "catalogSha256": "sha256:f3794a4a67464793136d2754332110f1ec8471c3c57cfd9fb10f5b0880274656",
+      "didDocument": "cases/unknown-noncritical-header/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "unknown-noncritical-header",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/verification-method-only/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/verification-method-only/did.json",
+      "didSha256": "sha256:b95c7db210ae4573f30c67376e09ebf81f7fc4f2768d011a6c01c763c1ae3dd3",
+      "expectedAccepted": false,
+      "id": "verification-method-only",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "assertionMethod authorization required"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/authentication-only/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/authentication-only/did.json",
+      "didSha256": "sha256:24e713e83602ab4216239c5aebe626a28d7882a557cb102e4d51b02780382b9e",
+      "expectedAccepted": false,
+      "id": "authentication-only",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "assertionMethod authorization required"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/wrong-did-id/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/wrong-did-id/did.json",
+      "didSha256": "sha256:f9e46e2e3d403e22fa67beabb224d52294b25549aa7e659a2117c587ffd88f6c",
+      "expectedAccepted": false,
+      "id": "wrong-did-id",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "DID document id mismatch"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/wrong-controller/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/wrong-controller/did.json",
+      "didSha256": "sha256:230a915ab4e6e0f400318239d865143a9535b1285f1d1def3808cdc9d19eeead",
+      "expectedAccepted": false,
+      "id": "wrong-controller",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "assertion controller mismatch"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/invalid-p256-point/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/invalid-p256-point/did.json",
+      "didSha256": "sha256:03de3cd267e944436d37a84037c1e6cabe10515d7cc308101b4ab6af0a0a71bf",
+      "expectedAccepted": false,
+      "id": "invalid-p256-point",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "invalid P-256 curve point"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/private-jwk-forbidden/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/private-jwk-forbidden/did.json",
+      "didSha256": "sha256:9b5f6565a3c31d17fb93caab256a3fa679571fa8a817d7798678b67fd8ae2e35",
+      "expectedAccepted": false,
+      "id": "private-jwk-forbidden",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "private key material is forbidden"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/duplicate-verification-method/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/duplicate-verification-method/did.json",
+      "didSha256": "sha256:fc4294a1b910c9fd5fcf4637156093b0809fb424fc1689a1b30cdd5bcf8bb706",
+      "expectedAccepted": false,
+      "id": "duplicate-verification-method",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "ambiguous duplicate verification method"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/future-issued/catalog.json",
+      "catalogSha256": "sha256:bbf4bf843f085d837030d42b887642a2fe46e8c404afd95197581e6e0dc136eb",
+      "didDocument": "cases/future-issued/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "future-issued",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": false,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/expiry-boundary/catalog.json",
+      "catalogSha256": "sha256:0fcb6a75e67acddaf2941aa95d47410ecfcb8068ff027c7b19ab011bf09d6668",
+      "didDocument": "cases/expiry-boundary/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "expiry-boundary",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": false,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/equivalent-timestamp-instants/catalog.json",
+      "catalogSha256": "sha256:35496997969614935652e2bbdd44afa50a567d27f8850d473c82d8c53268a44a",
+      "didDocument": "cases/equivalent-timestamp-instants/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "equivalent-timestamp-instants",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/no-expiry-permitted/catalog.json",
+      "catalogSha256": "sha256:e16820bc9ea28c35fc7682197811e0a84825a525fcaedaaa3c326f1f73a409ad",
+      "didDocument": "cases/no-expiry-permitted/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": true,
+      "id": "no-expiry-permitted",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": true,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": true
+      },
+      "requireExpiry": false,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    },
+    {
+      "catalog": "cases/untrusted-operator/catalog.json",
+      "catalogSha256": "sha256:92c79cb8ecaca5150b3ad7056174f1af209d5e5d3a0cc1865488c37a860eb0a4",
+      "didDocument": "cases/untrusted-operator/did.json",
+      "didSha256": "sha256:5c87b9dc203ea6ba3556b93126103ed1b60cf14ad535db2f30b6394e7a5dba9b",
+      "expectedAccepted": false,
+      "id": "untrusted-operator",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "accepted": false,
+        "fresh": true,
+        "limitations": [
+          "DID authentication depends on trusted acquisition of the supplied current DID document.",
+          "Catalog attribution does not verify entry publishers, artifact integrity, claim truth or legal identity."
+        ],
+        "operatorAttributed": true,
+        "signatureValid": true,
+        "signer": "did:web:catalog-test.example",
+        "signerAuthenticated": true,
+        "snapshotCoverage": true,
+        "trustedOperator": false
+      },
+      "requireExpiry": true,
+      "trustedOperators": []
+    },
+    {
+      "catalog": "cases/duplicate-json-member/catalog.json",
+      "catalogSha256": "sha256:c2f15f5176b75752d1da3296f97462d1fbf19ab17c2b4adcea24245b96d33d29",
+      "didDocument": "cases/duplicate-json-member/did.json",
+      "expectedAccepted": false,
+      "id": "duplicate-json-member",
+      "now": "2026-11-12T12:30:00Z",
+      "observedRust": {
+        "error": "duplicate JSON member rejected at wire boundary"
+      },
+      "requireExpiry": true,
+      "trustedOperators": [
+        "did:web:catalog-test.example"
+      ]
+    }
+  ],
+  "profile": "did-web-v1",
+  "purpose": "Public test vectors only; keys generated ephemerally and never exported. DID documents are offline fixture pins, not live domain authentication.",
+  "specificationHead": "2973e3ae00e43d27d24fa7c9a3b1d1ed5d811aad"
+}

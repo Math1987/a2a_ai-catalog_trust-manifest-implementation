@@ -3,6 +3,7 @@
 //! No DNS certification, registry authorization, or claim truth is implied by
 //! signing. Callers supply evidence and independent trust configuration.
 pub mod baseline;
+pub mod catalog_profile;
 pub mod crypto;
 pub mod did;
 #[cfg(feature = "http")]
@@ -13,6 +14,7 @@ pub mod verification;
 
 pub const BASELINE_REVISION: &str = "04a99cd1ac9a20dd6586c6196e87f5e4570303b1";
 pub const PR117_REVISION: &str = "51df07b58e831f71ab6047672d6482ef93f5015f";
+pub const PR123_REVISION: &str = "2973e3ae00e43d27d24fa7c9a3b1d1ed5d811aad";
 pub const DID_WEB_PROFILE: &str = "did-web-v1";
 
 /// Explicit signing authority and endorsement dates; never inferred from entry metadata.

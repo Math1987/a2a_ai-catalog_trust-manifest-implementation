@@ -1,5 +1,5 @@
 use aithos_catalog_signatures::{
-    self as lib, SigningContext, baseline,
+    self as lib, SigningContext, baseline, catalog_profile,
     crypto::LocalKey,
     fetch::Fetcher,
     json,
@@ -103,6 +103,49 @@ enum Command {
         #[arg(long)]
         require_publisher: bool,
     },
+    /// Sign a current PR123 whole-catalog snapshot for its declared operator.
+    SignCatalog {
+        #[arg(long)]
+        catalog: PathBuf,
+        #[arg(long)]
+        key: PathBuf,
+        #[arg(long)]
+        signer: String,
+        #[arg(long)]
+        kid: String,
+        #[arg(long)]
+        issued_at: Option<String>,
+        #[arg(long, default_value_t = 3600)]
+        lifetime_seconds: i64,
+        #[arg(long)]
+        out: PathBuf,
+    },
+    /// Verify PR123 with a pinned offline DID or bounded current HTTPS resolution.
+    VerifyCatalog {
+        #[arg(long, required_unless_present = "url", conflicts_with = "url")]
+        catalog: Option<PathBuf>,
+        #[arg(
+            long,
+            required_unless_present = "catalog",
+            conflicts_with = "catalog",
+            requires = "allow_origin"
+        )]
+        url: Option<String>,
+        #[arg(long, conflicts_with = "url", requires = "catalog")]
+        did_document: Option<PathBuf>,
+        #[arg(long, requires = "url")]
+        allow_origin: Vec<String>,
+        /// Independently configured trusted operator, never taken from the catalog.
+        #[arg(long)]
+        expect_operator: String,
+        #[arg(long)]
+        now: Option<String>,
+        /// Optional stricter local policy; the profile permits absent expiry.
+        #[arg(long)]
+        require_expiry: bool,
+        #[arg(long, default_value_t = 0)]
+        clock_skew_seconds: i64,
+    },
 }
 
 fn read(path: &Path) -> lib::Result<Vec<u8>> {
@@ -119,6 +162,54 @@ fn read(path: &Path) -> lib::Result<Vec<u8>> {
 }
 fn read_json(path: &Path) -> lib::Result<Value> {
     json::parse(&read(path)?)
+}
+
+/// Read new-profile signing keys only from private regular Unix files. Compare
+/// the opened inode with the inspected path so a final symlink swap is refused.
+fn read_private_key(path: &Path) -> lib::Result<LocalKey> {
+    #[cfg(unix)]
+    {
+        use std::{io::Read, os::unix::fs::MetadataExt};
+        let before = fs::symlink_metadata(path)
+            .map_err(|_| lib::Error("private key file is unavailable".into()))?;
+        if !before.file_type().is_file() || before.mode() & 0o077 != 0 {
+            return Err(lib::Error(
+                "private key must be a regular non-symlink file with no group/world permissions"
+                    .into(),
+            ));
+        }
+        let file = fs::File::open(path)
+            .map_err(|_| lib::Error("private key file is unavailable".into()))?;
+        let opened = file
+            .metadata()
+            .map_err(|_| lib::Error("private key metadata unavailable".into()))?;
+        if !opened.is_file()
+            || opened.mode() & 0o077 != 0
+            || opened.dev() != before.dev()
+            || opened.ino() != before.ino()
+            || opened.len() > 16_384
+        {
+            return Err(lib::Error("unsafe or oversized private key file".into()));
+        }
+        let mut bytes = zeroize::Zeroizing::new(Vec::new());
+        file.take(16_385)
+            .read_to_end(&mut bytes)
+            .map_err(|_| lib::Error("private key read failed".into()))?;
+        if bytes.len() > 16_384 {
+            return Err(lib::Error("private key file exceeds size limit".into()));
+        }
+        LocalKey::from_pem(
+            std::str::from_utf8(&bytes)
+                .map_err(|_| lib::Error("private key is not UTF-8 PKCS#8 PEM".into()))?,
+        )
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = path;
+        Err(lib::Error(
+            "private-key file signing requires Unix permission support".into(),
+        ))
+    }
 }
 fn write_new(path: &Path, bytes: &[u8], secret: bool) -> lib::Result<()> {
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
@@ -197,7 +288,9 @@ fn run() -> lib::Result<bool> {
             write_new(&key, local.to_pem()?.as_bytes(), true)?;
             write_json(&did_document, &document)?;
             output(
-                &value!({"publicDidDocument":did_document,"privateKeyFile":key,"note":"Local key only; DID document has not been published."}),
+                &value!({"publicDidDocument":did_document,"privateKeyFile":key,
+                    "publicKeyJwkSha256":json::digest(&json::canonical(&local.public_jwk())?),
+                    "note":"Local key only; DID document has not been published. Fingerprint is SHA-256 of the complete JCS public JWK."}),
             )?;
             Ok(true)
         }
@@ -299,6 +392,109 @@ fn run() -> lib::Result<bool> {
                 }
             };
             output(&report)?;
+            Ok(report.accepted)
+        }
+        Command::SignCatalog {
+            catalog,
+            key,
+            signer,
+            kid,
+            issued_at,
+            lifetime_seconds,
+            out,
+        } => {
+            if !(1..=31_536_000).contains(&lifetime_seconds) {
+                return Err(lib::Error(
+                    "catalog signature lifetime must be 1–31536000 seconds".into(),
+                ));
+            }
+            let catalog = read_json(&catalog)?;
+            let key = read_private_key(&key)?;
+            let issued = issued_at
+                .map(|s| lib::verification::timestamp(&s))
+                .transpose()?
+                .unwrap_or_else(OffsetDateTime::now_utc);
+            let expires = issued
+                .checked_add(Duration::seconds(lifetime_seconds))
+                .ok_or_else(|| lib::Error("catalog expiry exceeds timestamp range".into()))?;
+            let issued = stamp(issued)?;
+            let expires = stamp(expires)?;
+            let context = SigningContext {
+                signer: &signer,
+                kid: &kid,
+                key: &key,
+                issued_at: &issued,
+                expires_at: Some(&expires),
+            };
+            let signed = catalog_profile::sign_catalog(&catalog, &context)?;
+            let payload_digest = json::digest(&catalog_profile::payload(&signed)?);
+            write_json(&out, &signed)?;
+            output(
+                &value!({"signedCatalog":out,"signer":signer,"profile":lib::DID_WEB_PROFILE,
+                "sourceRevision":lib::PR123_REVISION,"issuedAt":issued,"expiresAt":expires,
+                "payloadDigest":payload_digest,"entryVerification":"not-performed"}),
+            )?;
+            Ok(true)
+        }
+        Command::VerifyCatalog {
+            catalog,
+            url,
+            did_document,
+            allow_origin,
+            expect_operator,
+            now,
+            require_expiry,
+            clock_skew_seconds,
+        } => {
+            lib::did::domain(&expect_operator)?;
+            if !(0..=300).contains(&clock_skew_seconds) {
+                return Err(lib::Error(
+                    "clock skew must be between zero and 300 seconds".into(),
+                ));
+            }
+            let (catalog, document, acquisition) = if let Some(url) = url {
+                let fetcher = Fetcher::new(allow_origin)?;
+                let catalog = json::parse(&fetcher.get(&url)?)?;
+                // Fail before resolving an unexpected identity. The expected
+                // identity and origin allowlist are independent CLI arguments.
+                if catalog
+                    .get("signature")
+                    .and_then(|s| s.get("signer"))
+                    .and_then(Value::as_str)
+                    != Some(&expect_operator)
+                {
+                    return Err(lib::Error(
+                        "catalog signer differs from expected operator".into(),
+                    ));
+                }
+                let document = fetcher.did_document(&expect_operator)?;
+                (catalog, document, "current-https-did")
+            } else {
+                let catalog =
+                    catalog.ok_or_else(|| lib::Error("--catalog or --url is required".into()))?;
+                let document = did_document.ok_or_else(|| {
+                    lib::Error("offline verification requires --did-document".into())
+                })?;
+                (
+                    read_json(&catalog)?,
+                    read_json(&document)?,
+                    "caller-pinned-did",
+                )
+            };
+            let now = now
+                .map(|s| lib::verification::timestamp(&s))
+                .transpose()?
+                .unwrap_or_else(OffsetDateTime::now_utc);
+            let mut policy = Policy::new([expect_operator], now);
+            policy.require_expiry = require_expiry;
+            policy.clock_skew = Duration::seconds(clock_skew_seconds);
+            let report = catalog_profile::verify_catalog(&catalog, &document, &policy)?;
+            let mut serialized =
+                serde_json::to_value(&report).map_err(|e| lib::Error(e.to_string()))?;
+            serialized["sourceRevision"] = lib::PR123_REVISION.into();
+            serialized["didAcquisition"] = acquisition.into();
+            serialized["verifiedAt"] = stamp(now)?.into();
+            output(&serialized)?;
             Ok(report.accepted)
         }
     }

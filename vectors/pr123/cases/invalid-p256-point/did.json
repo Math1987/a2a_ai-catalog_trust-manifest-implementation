@@ -1,0 +1,28 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "assertionMethod": [
+    "did:web:catalog-test.example#assertion-key"
+  ],
+  "id": "did:web:catalog-test.example",
+  "verificationMethod": [
+    {
+      "controller": "did:web:catalog-test.example",
+      "id": "did:web:catalog-test.example#assertion-key",
+      "publicKeyJwk": {
+        "alg": "ES256",
+        "crv": "P-256",
+        "key_ops": [
+          "verify"
+        ],
+        "kty": "EC",
+        "use": "sig",
+        "x": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "y": "Q-q7yg-lkl-zmBGMTzdly1RUr6QMWkpjl07UsQJrwfw"
+      },
+      "type": "JsonWebKey2020"
+    }
+  ]
+}
