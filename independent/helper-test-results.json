@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "checked_at": "2026-11-12T19:52:17.277639+00:00",
+  "tests_run": 7,
+  "failures": 0,
+  "errors": 0,
+  "python_version": "3.13.12",
+  "dependencies": {
+    "cryptography": "50.0.2",
+    "rfc8785": "0.1.4",
+    "idna": "3.20",
+    "cffi": "2.1.1",
+    "pycparser": "3.12"
+  },
+  "test_source_sha256": "8ee9c89526f0b983770ee74efc6ce7cad52859c5ef5da3bfeaf19c9733103ff4",
+  "verification_source_sha256": "34e0ac6513e3511696a9a96804d91a5d0dc4d2b040c15dc71831716fc8ab52fe",
+  "output": "test_duplicate_json_rejected_at_any_depth (test_helpers.HelperTests.test_duplicate_json_rejected_at_any_depth) ... ok\ntest_idna2008_alabel_supported (test_helpers.HelperTests.test_idna2008_alabel_supported) ... ok\ntest_invalid_calendar_date_and_leap_policy (test_helpers.HelperTests.test_invalid_calendar_date_and_leap_policy) ... ok\ntest_invalid_json_numbers_and_utf8_rejected (test_helpers.HelperTests.test_invalid_json_numbers_and_utf8_rejected) ... ok\ntest_root_did_rejects_normalization_and_network_address_forms (test_helpers.HelperTests.test_root_did_rejects_normalization_and_network_address_forms) ... ok\ntest_strict_base64url (test_helpers.HelperTests.test_strict_base64url) ... ok\ntest_timestamps_compare_instants_and_preserve_precision (test_helpers.HelperTests.test_timestamps_compare_instants_and_preserve_precision) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.002s\n\nOK\n"
+}
